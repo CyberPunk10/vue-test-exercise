@@ -11,18 +11,18 @@
                 <form>
                   <Select
                     v-bind:optionsBrand="optionsBrand"
-                    v-model="filterBrand"
+                    @push-filter-brand="replaceBrand"
                   />
                   <Select
                     v-bind:optionsSize="optionsSize"
-                    v-model="filterSize"
+                    @push-filter-size="replaceSize"
                   />
                   <Select
-                    v-bind:optionsColors="optionsColor"
-                    v-model="filterColor"
+                    v-bind:optionsColor="optionsColor"
+                    @push-filter-color="replaceColor"
                   />
                   <div class="text-right">
-                      <a href="#" class="btn btn-sm btn-secondary">Сбросить</a>
+                    <a href="#" class="btn btn-sm btn-secondary">Сбросить</a>
                   </div>
                 </form>
               </div>
@@ -59,27 +59,27 @@ export default {
   data () {
     return {
       optionsBrand: [
-        { id: 1, title: 'Бренд', value: 'brand' },
-        { id: 2, title: 'Super', value: 'super' },
-        { id: 3, title: 'Puper', value: 'puper' },
-        { id: 4, title: 'Cool', value: 'cool' },
-        { id: 5, title: 'Like', value: 'like' }
+        { id: 1, title: 'Бренд' },
+        { id: 2, title: 'Super' },
+        { id: 3, title: 'Puper' },
+        { id: 4, title: 'Cool' },
+        { id: 5, title: 'Like' }
       ],
       optionsSize: [
-        { id: 1, title: 'Размер', value: 'size' },
-        { id: 2, title: '29', value: '29' },
-        { id: 3, title: '31', value: '31' },
-        { id: 4, title: '35', value: '35' },
-        { id: 5, title: '37', value: '37' },
-        { id: 6, title: '42', value: '42' }
+        { id: 1, title: 'Размер' },
+        { id: 2, title: '29' },
+        { id: 3, title: '31' },
+        { id: 4, title: '35' },
+        { id: 5, title: '37' },
+        { id: 6, title: '42' }
       ],
       optionsColor: [
-        { id: 1, title: 'Цвет', value: 'color' },
-        { id: 2, title: 'Синий', value: 'blue' },
-        { id: 3, title: 'Красный', value: 'red' },
-        { id: 4, title: 'Зеленый', value: 'green' },
-        { id: 5, title: 'Белый', value: 'white' },
-        { id: 6, title: 'Серый', value: 'gray' }
+        { id: 1, title: 'Цвет' },
+        { id: 2, title: 'Синий' },
+        { id: 3, title: 'Красный' },
+        { id: 4, title: 'Зеленый' },
+        { id: 5, title: 'Белый' },
+        { id: 6, title: 'Серый' }
       ],
       products: [
         {
@@ -126,96 +126,73 @@ export default {
           color: 'зеленый'
         }
       ],
-      filterBrand: 'brand',
-      filterSize: 'size',
-      filterColor: 'color'
+      currentFilterBrand: 'Бренд',
+      currentFilterSize: 'Размер',
+      currentFilterColor: 'Цвет'
     }
   },
   components: {
     Card, Select
   },
   methods: {
-    filteredBrands () {
-      // if (this.filter === 'brand') {
-      //   return this.products
-      // } else if (this.filter === 'super') {
-      //   return this.products.filter(t => t.brand === 'super')
-      // } else if (this.filter === 'puper') {
-      //   return this.products.filter(t => t.brand === 'puper')
-      // } else if (this.filter === 'cool') {
-      //   return this.products.filter(t => t.brand === 'cool')
-      // } else if (this.filter === 'like') {
-      //   return this.products.filter(t => t.brand === 'like')
-      // } else {
-      //   return this.products
-      // }
-      return this.filterBrand
+    replaceBrand (value) {
+      this.currentFilterBrand = value
     },
-    filteredSize () {
-      // if (this.filter === 'size') {
-      //   return this.products
-      // } else if (this.filter === '29') {
-      //   return this.products.filter(t => t.size === '29')
-      // } else if (this.filter === '31') {
-      //   return this.products.filter(t => t.size === '31')
-      // } else if (this.filter === '35') {
-      //   return this.products.filter(t => t.size === '35')
-      // } else if (this.filter === '37') {
-      //   return this.products.filter(t => t.size !== '37')
-      // } else if (this.filter === '42') {
-      //   return this.products.filter(t => t.size !== '42')
-      // } else {
-      //   return this.products
-      // }
-      return this.filterSize
+    replaceSize (value) {
+      this.currentFilterSize = value
     },
-    filteredColor () {
-      // if (this.filter === 'color') {
-      //   return this.products
-      // } else if (this.filter === 'blue') {
-      //   return this.products.filter(t => t.color === 'синий')
-      // } else if (this.filter === 'red') {
-      //   return this.products.filter(t => t.color === 'красный')
-      // } else if (this.filter === 'green') {
-      //   return this.products.filter(t => t.color === 'зеленый')
-      // } else if (this.filter === 'white') {
-      //   return this.products.filter(t => t.color !== 'белый')
-      // } else if (this.filter === 'gray') {
-      //   return this.products.filter(t => t.color !== 'серый')
-      // } else {
-      //   return this.products
-      // }
-      return this.filterColor
+    replaceColor (value) {
+      this.currentFilterColor = value
     }
   },
   computed: {
     filtered () {
-      // const selectBrand = this.filteredBrands()
-      // const selectSize = this.filteredSize()
-      // const selectColor = this.filteredColor()
+      const brand = this.currentFilterBrand.toLowerCase()
+      const size = this.currentFilterSize.toLowerCase()
+      const color = this.currentFilterColor.toLowerCase()
+      console.log(this.optionsBrand[0].title.toLowerCase())
 
-      // let prod = this.products.filter(t => t.brand === 'super')
-      // prod = prod.filter(t => t.size === '29')
-      // prod = prod.filter(t => t.color === 'зелёный')
+      let resultFiltered
+      console.log(brand, size, color)
 
-      if (this.filterBrand === 'brand') {
-        return this.products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
+      if (brand !== this.optionsBrand[0].title.toLowerCase()) {
+        resultFiltered = this.products.filter(t => t.brand === brand)
+      } else {
+        resultFiltered = this.products
       }
-      if (this.filterBrand === 'super') {
-        return this.products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
-      }
-      if (this.filterBrand === 'puper') {
-        return this.products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
-      }
-      if (this.filterBrand === 'cool') {
-        return this.products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
-      }
-      if (this.filterBrand === 'like') {
-        return this.products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
-      }
-      return this.products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
+
+      // const testt = t.brand === brand
+      // resultFiltered = this.products.filter(t => t.brand === brand && t.size === +size && t.color === color)
+      // if (size !== this.optionsSize[0].title.toLowerCase()) {
+      //   resultFiltered = this.products.filter(t => t.size === size)
+      // }
+      // if (color !== this.optionsColor[0].title.toLowerCase()) {
+      //   resultFiltered = this.products.filter(t => t.color === color)
+      // }
+
+      // if (color !== 'размер') {
+      //   resultFiltered += this.products.filter(t => t.brand === brand)
+      // }
+
+      // if (brand !== 'brand') {
+      //   resultFiltered += this.products.filter(t => t.brand === brand)
+      // }
+      // if (this.filterBrand === 'super') {
+      //   return this.products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
+      // }
+      // if (this.filterBrand === 'puper') {
+      //   return this.products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
+      // }
+      // if (this.filterBrand === 'cool') {
+      //   return this.products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
+      // }
+      // if (this.filterBrand === 'like') {
+      //   return this.products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
+      // }
+      // return this.products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
       // products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
       // return this.products.filter(t => t.brand === 'super').filter(t => t.size === '29')
+      return resultFiltered
     }
   }
 }

@@ -4,29 +4,40 @@
     <select
       class="form-control"
       v-if="optionsBrand"
+      v-model="filterBrand"
     >
+
       <option
         v-for="option in optionsBrand" :key="option.id"
-        v-bind:value="option.value"
+        v-bind:value="option.title"
       >{{ option.title }}</option>
+
     </select>
 
     <select
       class="form-control"
-      v-if="optionsSize">
+      v-if="optionsSize"
+      v-model="filterSize"
+      >
+
       <option
         v-for="option in optionsSize" :key="option.id"
-        v-bind:value="option.value"
+        v-bind:value="option.title"
       >{{ option.title }}</option>
+
     </select>
 
     <select
       class="form-control"
-      v-if="optionsColors">
+      v-if="optionsColor"
+      v-model="filterColor"
+      >
+
       <option
-        v-for="option in optionsColors" :key="option.id"
-        v-bind:value="option.value"
+        v-for="option in optionsColor" :key="option.id"
+        v-bind:value="option.title"
       >{{ option.title }}</option>
+
     </select>
 
   </div>
@@ -35,35 +46,32 @@
 <script>
 export default {
   name: 'Select',
-  // data () {
-  //   return {
-  //     filter: 'brand'
-  //   }
-  // },
-  // watch: {
-  //   filter (value) {
-  //     console.log(value)
-  //   }
-  // },
+  data () {
+    return {
+      filterBrand: 'Бренд',
+      filterSize: 'Размер',
+      filterColor: 'Цвет'
+    }
+  },
   props: [
     'options-brand',
     'options-size',
-    'options-colors'
+    'options-color'
   ],
-  // computed: {
-  //   filteredBrands () {
-  //     if (this.filter === 'brand') {
-  //       console.log(this.filter)
-  //       return this.option
-  //     }
-  //   }
-  // },
-  methods: {
-    hh (el) {
-      console.log(this)
+  watch: {
+    filterBrand (value) {
+      this.$emit('push-filter-brand', value)
+    },
+    filterSize (value) {
+      this.$emit('push-filter-size', value)
+    },
+    filterColor (value) {
+      this.$emit('push-filter-color', value)
     }
+  },
+  methods: {
+
   }
 }
-// console.log()
 
 </script>
