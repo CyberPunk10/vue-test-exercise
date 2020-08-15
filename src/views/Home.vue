@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="container-fluid">
+    <div class="container-fluid container-custom">
       <h1>Список товаров</h1>
       <div class="row">
         <div class="col-12">
@@ -150,10 +150,8 @@ export default {
       const brand = this.currentFilterBrand.toLowerCase()
       const size = this.currentFilterSize.toLowerCase()
       const color = this.currentFilterColor.toLowerCase()
-      console.log(this.optionsBrand[0].title.toLowerCase())
 
       let resultFiltered
-      console.log(brand, size, color)
 
       if (brand !== this.optionsBrand[0].title.toLowerCase()) {
         resultFiltered = this.products.filter(t => t.brand === brand)
@@ -161,39 +159,23 @@ export default {
         resultFiltered = this.products
       }
 
-      // const testt = t.brand === brand
-      // resultFiltered = this.products.filter(t => t.brand === brand && t.size === +size && t.color === color)
-      // if (size !== this.optionsSize[0].title.toLowerCase()) {
-      //   resultFiltered = this.products.filter(t => t.size === size)
-      // }
-      // if (color !== this.optionsColor[0].title.toLowerCase()) {
-      //   resultFiltered = this.products.filter(t => t.color === color)
-      // }
+      if (size !== this.optionsSize[0].title.toLowerCase()) {
+        resultFiltered = resultFiltered.filter(t => t.size === +size) // строку приводим к числу
+      }
 
-      // if (color !== 'размер') {
-      //   resultFiltered += this.products.filter(t => t.brand === brand)
-      // }
+      if (color !== this.optionsColor[0].title.toLowerCase()) {
+        resultFiltered = resultFiltered.filter(t => t.color === color)
+      }
 
-      // if (brand !== 'brand') {
-      //   resultFiltered += this.products.filter(t => t.brand === brand)
-      // }
-      // if (this.filterBrand === 'super') {
-      //   return this.products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
-      // }
-      // if (this.filterBrand === 'puper') {
-      //   return this.products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
-      // }
-      // if (this.filterBrand === 'cool') {
-      //   return this.products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
-      // }
-      // if (this.filterBrand === 'like') {
-      //   return this.products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
-      // }
-      // return this.products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
-      // products.filter(t => t.brand === 'super' && t.size === +'31' && t.color === 'красный')
-      // return this.products.filter(t => t.brand === 'super').filter(t => t.size === '29')
+      // вполне вероятно тут можно ускорить фильтрацию, но надо это проверять на практике с большим массивом
       return resultFiltered
     }
   }
 }
 </script>
+
+<style lang="sass" scoped>
+  .container-custom
+    max-width: 1200px
+    margin-top: 2rem
+</style>
